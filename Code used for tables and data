@@ -1,0 +1,122 @@
+CREATE DATABASE ClinicManagement;
+USE ClinicManagement;
+CREATE TABLE Department (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(100) NOT NULL
+);
+CREATE TABLE Clinic (
+    ClinicID INT PRIMARY KEY,
+    ClinicName VARCHAR(100) NOT NULL,
+    Address VARCHAR(255),
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID)
+        REFERENCES Department(DepartmentID)
+);
+CREATE TABLE Patient (
+    PatientID INT PRIMARY KEY,
+    PatientName VARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(20),
+    Address VARCHAR(255),
+    BirthDate DATE,
+    Job VARCHAR(100)
+);
+CREATE TABLE Doctor (
+    DoctorID INT PRIMARY KEY,
+    DoctorName VARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(20),
+    Address VARCHAR(255),
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID)
+        REFERENCES Department(DepartmentID)
+);
+CREATE TABLE Appointment (
+    AppointmentID INT PRIMARY KEY,
+    AppointmentDate DATE,
+    StartTime TIME,
+    EndTime TIME,
+    Cost DECIMAL(10,2),
+    Status ENUM('Scheduled','In Progress','Postponed'),
+    Diagnosis VARCHAR(255),
+    PatientID INT,
+    DoctorID INT,
+    FOREIGN KEY (PatientID)
+        REFERENCES Patient(PatientID),
+    FOREIGN KEY (DoctorID)
+        REFERENCES Doctor(DoctorID)
+);
+
+
+USE ClinicManagement;
+INSERT INTO Department VALUES
+(1,'Cardiology'),
+(2,'Neurology'),
+(3,'Dermatology'),
+(4,'Pediatrics'),
+(5,'Orthopedics'),
+(6,'Ophthalmology'),
+(7,'ENT'),
+(8,'Urology'),
+(9,'Oncology'),
+(10,'Gastroenterology');
+INSERT INTO Clinic VALUES
+(101,'Heart Care Clinic','Nasr City',1),
+(102,'Advanced Cardio Center','Maadi',1),
+(103,'Brain Health Clinic','Heliopolis',2),
+(104,'Skin Beauty Clinic','6th October',3),
+(105,'Kids Medical Center','Dokki',4),
+(106,'Bone & Joint Clinic','Mohandessin',5),
+(107,'Vision Eye Center','Zamalek',6),
+(108,'ENT Specialist Clinic','Shoubra',7),
+(109,'Urology Care Center','Faisal',8),
+(110,'Digestive Health Clinic','New Cairo',10);
+INSERT INTO Doctor VALUES
+(201,'Ahmed Hassan','01011111111','Cairo',1),
+(202,'Mona Ali','01022222222','Giza',2),
+(203,'Khaled Samy','01033333333','Alexandria',3),
+(204,'Nour Emad','01044444444','Cairo',4),
+(205,'Omar Adel','01055555555','Giza',5),
+(206,'Sara Mohamed','01066666666','Cairo',6),
+(207,'Youssef Hany','01077777777','Tanta',7),
+(208,'Mariam Essam','01088888888','Mansoura',8),
+(209,'Hossam Nabil','01099999999','Alexandria',9),
+(210,'Rania Tarek','01012345678','Cairo',10);
+INSERT INTO Patient VALUES
+(12527,'Menna Mohamed','01111111111','Cairo','2003-05-10','Student'),
+(12528,'Ali Mahmoud','01122222222','Giza','1998-09-15','Engineer'),
+(12529,'Sara Ahmed','01133333333','Alexandria','2000-01-20','Teacher'),
+(12530,'Youssef Adel','01144444444','Cairo','1995-07-12','Designer'),
+(12531,'Maha Samir','01155555555','Giza','1999-11-08','Doctor'),
+(12532,'Mohamed Nasser','01166666666','Mansoura','1997-03-14','Accountant'),
+(12533,'Nadine Fathy','01177777777','Tanta','2001-06-21','Lawyer'),
+(12534,'Karim Ashraf','01188888888','Cairo','1996-12-01','Programmer'),
+(12535,'Aya Mostafa','01199999999','Alexandria','2002-09-17','Student'),
+(12536,'Hany Ibrahim','01112312312','Giza','1994-04-25','Architect');
+INSERT INTO Appointment VALUES
+(301,'2025-01-15','10:00:00','10:30:00',500,'Scheduled','Fatty liver',12527,201),
+
+(302,'2025-02-20','11:00:00','11:30:00',700,'In Progress','Hypertension',12528,201),
+
+(303,'2024-11-05','09:00:00','09:30:00',450,'Postponed','Fatty liver',12529,202),
+
+(304,'2023-06-18','13:00:00','13:30:00',300,'Scheduled','Migraine',12527,202),
+
+(305,'2025-03-22','14:00:00','14:30:00',600,'Scheduled','Skin Allergy',12530,203),
+
+(306,'2025-04-10','10:00:00','10:20:00',400,'Scheduled','Eye Infection',12531,206),
+
+(307,'2025-04-15','11:00:00','11:25:00',550,'In Progress','Ear Infection',12532,207),
+
+(308,'2025-05-01','12:00:00','12:30:00',650,'Scheduled','Kidney Stones',12533,208),
+
+(309,'2025-05-08','09:00:00','09:40:00',800,'Postponed','Cancer Screening',12534,209),
+
+(310,'2025-05-12','15:00:00','15:30:00',500,'Scheduled','Gastritis',12535,210);
+CREATE VIEW CardiologyClinics AS
+SELECT ClinicName, Address
+FROM Clinic
+WHERE DepartmentID = 1;
+SELECT * FROM Department;
+SELECT * FROM Clinic;
+SELECT * FROM Doctor;
+SELECT * FROM Patient;
+SELECT * FROM Appointment;
